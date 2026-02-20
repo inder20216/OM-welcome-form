@@ -698,11 +698,28 @@
             }
 
             try {
-                const response = await fetch('https://inder20216.app.n8n.cloud/webhook/web-leads', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData)
-                });
+                const fd = new FormData();
+fd.append('name', document.getElementById('fullName').value.trim());
+fd.append('phone', document.getElementById('contactNumber').value.trim());
+fd.append('email', document.getElementById('email').value.trim());
+fd.append('currentLocation', document.getElementById('currentLocation').value);
+fd.append('jobLocation', document.getElementById('jobLocation').value);
+fd.append('voiceProcess', form.querySelector('input[name="voiceProcess"]:checked').value);
+fd.append('experience', form.querySelector('input[name="experience"]:checked').value);
+fd.append('aboutYourself', document.getElementById('aboutYourself').value.trim());
+fd.append('source', document.getElementById('source').value);
+fd.append('position', document.getElementById('position').value);
+fd.append('formId', 'WEB-FORM-' + Date.now());
+fd.append('submittedAt', new Date().toISOString());
+const referredByVal = document.getElementById('referredBy').value.trim();
+if (referredByVal) fd.append('referredBy', referredByVal);
+const cvFile = document.getElementById('cvInput').files[0];
+fd.append('cv', cvFile, cvFile.name);
+
+const response = await fetch('https://inder20216.app.n8n.cloud/webhook/web-leads', {
+    method: 'POST',
+    body: fd
+});
 
                 if (response.ok) {
                     document.getElementById('loading').classList.remove('show');
