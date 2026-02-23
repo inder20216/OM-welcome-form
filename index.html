@@ -716,7 +716,7 @@ if (referredByVal) fd.append('referredBy', referredByVal);
 const cvFile = document.getElementById('cvInput').files[0];
 fd.append('cv', cvFile, cvFile.name);
 
-const response = await fetch('https://inder20216.app.n8n.cloud/webhook/web-leads', {
+const response = await fetch('https://inder20216.app.n8n.cloud/webhook/welcome-form', {
     method: 'POST',
     body: fd
 });
