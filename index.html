@@ -145,6 +145,23 @@
         .cv-upload-subtext {
             font-size: 13px;
             color: #6b7280;
+            line-height: 1.6;
+        }
+        .cv-upload-subtext strong {
+            color: #374151;
+        }
+        .cv-upload-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 8px;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, #fdf2f8, #eff6ff, #f5f3ff);
+            border: 1px solid rgba(168,85,247,0.25);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #7c3aed;
         }
         .cv-upload-btn {
             display: inline-block;
@@ -324,17 +341,17 @@
 
                 <div class="form-group">
                     <label>Are you comfortable with Voice Process? <span class="required">*</span></label>
-                    <div class="radio-group">
+                    <div class="radio-group" id="voiceProcessGroup">
                         <div class="radio-option">
                             <input type="radio" id="voiceYes" name="voiceProcess" value="Yes" required>
                             <label for="voiceYes">Yes</label>
                         </div>
                         <div class="radio-option">
-                            <input type="radio" id="voiceNo" name="voiceProcess" value="No">
+                            <input type="radio" id="voiceNo" name="voiceProcess" value="No" required>
                             <label for="voiceNo">No</label>
                         </div>
                         <div class="radio-option">
-                            <input type="radio" id="voiceMaybe" name="voiceProcess" value="Maybe">
+                            <input type="radio" id="voiceMaybe" name="voiceProcess" value="Maybe" required>
                             <label for="voiceMaybe">Maybe</label>
                         </div>
                     </div>
@@ -346,17 +363,17 @@
 
                 <div class="form-group">
                     <label>Experience Level <span class="required">*</span></label>
-                    <div class="radio-group">
+                    <div class="radio-group" id="experienceGroup">
                         <div class="radio-option">
                             <input type="radio" id="exp0" name="experience" value="0-1 Year" required>
                             <label for="exp0">0-1 Year</label>
                         </div>
                         <div class="radio-option">
-                            <input type="radio" id="exp1" name="experience" value="1-3 Years">
+                            <input type="radio" id="exp1" name="experience" value="1-3 Years" required>
                             <label for="exp1">1-3 Years</label>
                         </div>
                         <div class="radio-option">
-                            <input type="radio" id="exp3" name="experience" value="3+ Years">
+                            <input type="radio" id="exp3" name="experience" value="3+ Years" required>
                             <label for="exp3">3+ Years</label>
                         </div>
                     </div>
@@ -379,10 +396,16 @@
                     <div class="cv-upload-area" id="cvUploadArea">
                         <span class="cv-upload-icon">📄</span>
                         <div class="cv-upload-text">Drag & drop your CV here</div>
-                        <div class="cv-upload-subtext">Supports PDF, DOC, DOCX, JPG, PNG (Max 5MB)</div>
+                        <div class="cv-upload-subtext">
+                            <strong>1 file only</strong> &nbsp;·&nbsp; PDF or Word document (.pdf, .doc, .docx)<br>
+                            Maximum file size: 5MB
+                        </div>
+                        <div class="cv-upload-badge">
+                            📎 PDF &nbsp;|&nbsp; DOC &nbsp;|&nbsp; DOCX
+                        </div>
                         <label for="cvInput" class="cv-upload-btn">Browse File</label>
                         <input type="file" id="cvInput" name="cv"
-                               accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png">
+                               accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
                     </div>
 
                     <div class="upload-progress" id="uploadProgress">
@@ -457,7 +480,7 @@
         const referredByInput = document.getElementById('referredBy');
 
         // ===== CV UPLOAD LOGIC =====
-        let cvFileData = null; // Will hold { base64, name, type, size }
+        let cvFileData = null;
 
         const cvInput = document.getElementById('cvInput');
         const cvUploadArea = document.getElementById('cvUploadArea');
@@ -470,18 +493,17 @@
         const uploadProgressBar = document.getElementById('uploadProgressBar');
 
         const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
+        // Only PDF and Word documents allowed
         const ALLOWED_TYPES = [
             'application/pdf',
             'application/msword',
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            'image/jpeg',
-            'image/png'
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
         ];
 
         function getFileIcon(type) {
             if (type === 'application/pdf') return '📕';
             if (type.includes('word') || type.includes('document')) return '📘';
-            if (type.startsWith('image/')) return '🖼️';
             return '📄';
         }
 
@@ -496,8 +518,9 @@
 
             if (!ALLOWED_TYPES.includes(file.type)) {
                 cvUploadArea.classList.add('error');
-                errorEl.textContent = 'Invalid file type. Please upload PDF, DOC, DOCX, JPG, or PNG.';
+                errorEl.textContent = 'Invalid file type. Please upload a PDF or Word document (.pdf, .doc, .docx) only.';
                 errorEl.classList.add('show');
+                cvInput.value = '';
                 return;
             }
 
@@ -505,6 +528,7 @@
                 cvUploadArea.classList.add('error');
                 errorEl.textContent = 'File is too large. Maximum size is 5MB.';
                 errorEl.classList.add('show');
+                cvInput.value = '';
                 return;
             }
 
@@ -523,8 +547,8 @@
                 uploadProgressBar.style.width = '100%';
                 setTimeout(() => uploadProgress.classList.remove('show'), 400);
 
-                const base64Full = e.target.result; // data:...;base64,...
-                const base64Data = base64Full.split(',')[1]; // just the base64 part
+                const base64Full = e.target.result;
+                const base64Data = base64Full.split(',')[1];
 
                 cvFileData = {
                     base64: base64Data,
@@ -534,7 +558,6 @@
                     size: file.size
                 };
 
-                // Update UI
                 cvUploadArea.classList.remove('error');
                 cvUploadArea.classList.add('has-file');
                 cvFileIcon.textContent = getFileIcon(file.type);
@@ -636,15 +659,33 @@
             e.preventDefault();
 
             let isValid = true;
+            let firstErrorEl = null;
 
-            // Validate required form fields
-            const requiredFields = form.querySelectorAll('[required]');
-            requiredFields.forEach(field => {
-                if (!field.value || (field.type === 'radio' && !form.querySelector(`[name="${field.name}"]:checked`))) {
+            // Validate all text/select/textarea required fields
+            const textFields = form.querySelectorAll('input[type="text"][required], input[type="email"][required], input[type="tel"][required], select[required], textarea[required]');
+            textFields.forEach(field => {
+                if (!field.value.trim()) {
                     isValid = false;
                     field.classList.add('error');
                     const errorEl = document.getElementById(field.id + 'Error');
                     if (errorEl) errorEl.classList.add('show');
+                    if (!firstErrorEl) firstErrorEl = field;
+                }
+            });
+
+            // Validate radio groups
+            const radioGroups = ['voiceProcess', 'experience'];
+            radioGroups.forEach(groupName => {
+                const checked = form.querySelector(`input[name="${groupName}"]:checked`);
+                const errorEl = document.getElementById(groupName + 'Error');
+                if (!checked) {
+                    isValid = false;
+                    if (errorEl) errorEl.classList.add('show');
+                    // highlight radio options
+                    const groupEl = document.getElementById(groupName + 'Group');
+                    if (groupEl && !firstErrorEl) firstErrorEl = groupEl;
+                } else {
+                    if (errorEl) errorEl.classList.remove('show');
                 }
             });
 
@@ -652,12 +693,22 @@
             if (!cvFileData) {
                 isValid = false;
                 cvUploadArea.classList.add('error');
-                document.getElementById('cvError').textContent = 'Please upload your CV or resume';
-                document.getElementById('cvError').classList.add('show');
+                const cvErr = document.getElementById('cvError');
+                cvErr.textContent = 'Please upload your CV or resume (PDF or Word document)';
+                cvErr.classList.add('show');
+                if (!firstErrorEl) firstErrorEl = cvUploadArea;
+            }
+
+            // Validate referredBy if visible
+            if (referredByGroup.style.display !== 'none' && !referredByInput.value.trim()) {
+                isValid = false;
+                referredByInput.classList.add('error');
+                document.getElementById('referredByError').classList.add('show');
+                if (!firstErrorEl) firstErrorEl = referredByInput;
             }
 
             if (!isValid) {
-                alert('❌ Please fill in all required fields and upload your CV.');
+                if (firstErrorEl) firstErrorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
 
@@ -665,61 +716,29 @@
             document.getElementById('formContent').style.display = 'none';
             document.getElementById('loading').classList.add('show');
 
-            // Prepare data — CV sent as base64
-            const formData = {
-                name: document.getElementById('fullName').value.trim(),
-                phone: document.getElementById('contactNumber').value.trim(),
-                email: document.getElementById('email').value.trim(),
-                currentLocation: document.getElementById('currentLocation').value,
-                jobLocation: document.getElementById('jobLocation').value,
-                voiceProcess: form.querySelector('input[name="voiceProcess"]:checked').value,
-                experience: form.querySelector('input[name="experience"]:checked').value,
-                aboutYourself: document.getElementById('aboutYourself').value.trim(),
-                source: document.getElementById('source').value,
-                formId: 'WEB-FORM-' + Date.now(),
-                submittedAt: new Date().toISOString(),
-
-                // CV attachment
-                cv: {
-                    fileName: cvFileData.name,
-                    fileType: cvFileData.type,
-                    fileSize: cvFileData.size,
-                    base64Content: cvFileData.base64   // pure base64, no data: prefix
-                }
-            };
-
-            const position = document.getElementById('position').value;
-            if (position) formData.position = position;
-
-            const referredBy = document.getElementById('referredBy').value.trim();
-            if (referredBy) {
-                if (formData.source === 'Consultancy') formData.consultancyName = referredBy;
-                else if (formData.source === 'Internal Reference') formData.referredBy = referredBy;
-            }
-
             try {
                 const fd = new FormData();
-fd.append('name', document.getElementById('fullName').value.trim());
-fd.append('phone', document.getElementById('contactNumber').value.trim());
-fd.append('email', document.getElementById('email').value.trim());
-fd.append('currentLocation', document.getElementById('currentLocation').value);
-fd.append('jobLocation', document.getElementById('jobLocation').value);
-fd.append('voiceProcess', form.querySelector('input[name="voiceProcess"]:checked').value);
-fd.append('experience', form.querySelector('input[name="experience"]:checked').value);
-fd.append('aboutYourself', document.getElementById('aboutYourself').value.trim());
-fd.append('source', document.getElementById('source').value);
-fd.append('position', document.getElementById('position').value);
-fd.append('formId', 'WEB-FORM-' + Date.now());
-fd.append('submittedAt', new Date().toISOString());
-const referredByVal = document.getElementById('referredBy').value.trim();
-if (referredByVal) fd.append('referredBy', referredByVal);
-const cvFile = document.getElementById('cvInput').files[0];
-fd.append('cv', cvFile, cvFile.name);
+                fd.append('name', document.getElementById('fullName').value.trim());
+                fd.append('phone', document.getElementById('contactNumber').value.trim());
+                fd.append('email', document.getElementById('email').value.trim());
+                fd.append('currentLocation', document.getElementById('currentLocation').value);
+                fd.append('jobLocation', document.getElementById('jobLocation').value);
+                fd.append('voiceProcess', form.querySelector('input[name="voiceProcess"]:checked').value);
+                fd.append('experience', form.querySelector('input[name="experience"]:checked').value);
+                fd.append('aboutYourself', document.getElementById('aboutYourself').value.trim());
+                fd.append('source', document.getElementById('source').value);
+                fd.append('position', document.getElementById('position').value);
+                fd.append('formId', 'WEB-FORM-' + Date.now());
+                fd.append('submittedAt', new Date().toISOString());
+                const referredByVal = document.getElementById('referredBy').value.trim();
+                if (referredByVal) fd.append('referredBy', referredByVal);
+                const cvFile = document.getElementById('cvInput').files[0];
+                fd.append('cv', cvFile, cvFile.name);
 
-const response = await fetch('https://inder20216.app.n8n.cloud/webhook/welcome-form', {
-    method: 'POST',
-    body: fd
-});
+                const response = await fetch('https://inder20216.app.n8n.cloud/webhook/welcome-form', {
+                    method: 'POST',
+                    body: fd
+                });
 
                 if (response.ok) {
                     document.getElementById('loading').classList.remove('show');
