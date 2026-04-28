@@ -277,7 +277,7 @@
         <div class="form-content" id="formContent">
             <form id="careerForm">
                 <!-- Basic Information -->
-                <div class="section-title">📋 Basic Information</div>
+                <div class="section-title">&#x1F464; Basic Information</div>
 
                 <div class="form-group">
                     <label for="fullName">Full Name <span class="required">*</span></label>
@@ -313,7 +313,7 @@
                 </div>
 
                 <!-- Job Preferences -->
-                <div class="section-title">💼 Job Preferences</div>
+                <div class="section-title">&#x1F4BC; Job Preferences</div>
 
                 <div class="form-group">
                     <label for="position">Position Applying For <span class="required">*</span></label>
@@ -322,6 +322,11 @@
                         <option value="Customer Support">Customer Support</option>
                         <option value="Patient Support">Patient Support</option>
                         <option value="Resonate">Resonate</option>
+                        <option value="Architect Design Lead">Architect Design Lead</option>
+                        <option value="Architect AI & Design Workflows Specialist">Architect AI &amp; Design Workflows Specialist</option>
+                        <option value="Interior Designer Architect">Interior Designer Architect</option>
+                        <option value="Draughtsman Architect">Draughtsman Architect</option>
+                        <option value="Fresher Architect">Fresher Architect</option>
                         <option value="Other">Other</option>
                     </select>
                     <div class="error-message" id="positionError">Please select a position</div>
@@ -359,7 +364,7 @@
                 </div>
 
                 <!-- Experience & Background -->
-                <div class="section-title">🎓 Experience & Background</div>
+                <div class="section-title">&#x1F4CB; Experience &amp; Background</div>
 
                 <div class="form-group">
                     <label>Experience Level <span class="required">*</span></label>
@@ -388,20 +393,20 @@
                 </div>
 
                 <!-- CV Upload -->
-                <div class="section-title">📎 Resume / CV</div>
+                <div class="section-title">&#x1F4C4; Resume / CV</div>
 
                 <div class="form-group">
                     <label>Upload Your CV / Resume <span class="required">*</span></label>
 
                     <div class="cv-upload-area" id="cvUploadArea">
-                        <span class="cv-upload-icon">📄</span>
-                        <div class="cv-upload-text">Drag & drop your CV here</div>
+                        <span class="cv-upload-icon">&#x1F4CE;</span>
+                        <div class="cv-upload-text">Drag &amp; drop your CV here</div>
                         <div class="cv-upload-subtext">
-                            <strong>1 file only</strong> &nbsp;·&nbsp; PDF or Word document (.pdf, .doc, .docx)<br>
+                            <strong>1 file only</strong> &nbsp;&middot;&nbsp; PDF or Word document (.pdf, .doc, .docx)<br>
                             Maximum file size: 5MB
                         </div>
                         <div class="cv-upload-badge">
-                            📎 PDF &nbsp;|&nbsp; DOC &nbsp;|&nbsp; DOCX
+                            &#x1F4C4; PDF &nbsp;|&nbsp; DOC &nbsp;|&nbsp; DOCX
                         </div>
                         <label for="cvInput" class="cv-upload-btn">Browse File</label>
                         <input type="file" id="cvInput" name="cv"
@@ -413,33 +418,34 @@
                     </div>
 
                     <div class="cv-preview" id="cvPreview">
-                        <span class="cv-file-icon" id="cvFileIcon">📄</span>
+                        <span class="cv-file-icon" id="cvFileIcon">&#x1F4C4;</span>
                         <div class="cv-file-info">
                             <div class="cv-file-name" id="cvFileName">file.pdf</div>
                             <div class="cv-file-size" id="cvFileSize">0 KB</div>
                         </div>
-                        <button type="button" class="cv-remove-btn" id="cvRemoveBtn" title="Remove file">✕</button>
+                        <button type="button" class="cv-remove-btn" id="cvRemoveBtn" title="Remove file">&#x2715;</button>
                     </div>
 
                     <div class="error-message" id="cvError">Please upload your CV or resume</div>
                 </div>
 
                 <!-- Source Tracking -->
-                <div class="section-title">📢 How Did You Hear About Us?</div>
+                <div class="section-title">&#x1F4E2; How Did You Hear About Us?</div>
 
                 <div class="form-group">
                     <label for="source">Source <span class="required">*</span></label>
                     <select id="source" name="source" required>
                         <option value="">Select source</option>
                         <option value="Walk-in">Walk-in at Office</option>
-                        <option value="Facebook Campaign">Facebook Campaign</option>
-                        <option value="Instagram Campaign">Instagram Campaign</option>
+                        <option value="Facebook">Facebook</option>
+                        <option value="Instagram">Instagram</option>
                         <option value="LinkedIn">LinkedIn</option>
                         <option value="Naukri">Naukri.com</option>
                         <option value="Job Hai">Job Hai</option>
+                        <option value="WorkIndia">WorkIndia</option>
                         <option value="Consultancy">Consultancy</option>
                         <option value="Internal Reference">Employee Reference</option>
-                        <option value="Other">Other</option>
+                        <option value="Others">Others</option>
                     </select>
                     <div class="error-message" id="sourceError">Please select how you heard about us</div>
                 </div>
@@ -462,7 +468,7 @@
         </div>
 
         <div class="success-message" id="successMessage">
-            <div class="success-icon">✓</div>
+            <div class="success-icon">&#x2713;</div>
             <h2 style="background: linear-gradient(135deg, #ec4899 0%, #3b82f6 50%, #a855f7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 15px; font-size: 30px; font-weight: 700;">Application Submitted!</h2>
             <p style="color: #6b7280; font-size: 16px; line-height: 1.6;">
                 Thank you for applying to Open Mind Services. Our HR team will review your application and contact you soon.
@@ -494,7 +500,6 @@
 
         const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
-        // Only PDF and Word documents allowed
         const ALLOWED_TYPES = [
             'application/pdf',
             'application/msword',
@@ -502,9 +507,9 @@
         ];
 
         function getFileIcon(type) {
-            if (type === 'application/pdf') return '📕';
-            if (type.includes('word') || type.includes('document')) return '📘';
-            return '📄';
+            if (type === 'application/pdf') return '&#x1F4D5;';
+            if (type.includes('word') || type.includes('document')) return '&#x1F4C4;';
+            return '&#x1F4C4;';
         }
 
         function formatFileSize(bytes) {
@@ -532,7 +537,6 @@
                 return;
             }
 
-            // Show progress animation
             uploadProgress.classList.add('show');
             let progress = 0;
             const interval = setInterval(() => {
@@ -580,7 +584,6 @@
             cvUploadArea.classList.remove('has-file', 'error');
         });
 
-        // Drag and drop
         cvUploadArea.addEventListener('dragover', function(e) {
             e.preventDefault();
             this.classList.add('dragover');
@@ -595,7 +598,6 @@
         });
         // ===== END CV UPLOAD LOGIC =====
 
-        // Show/hide referred by field
         sourceSelect.addEventListener('change', function() {
             if (this.value === 'Internal Reference' || this.value === 'Consultancy') {
                 referredByGroup.style.display = 'block';
@@ -607,7 +609,6 @@
             }
         });
 
-        // Validate full name
         document.getElementById('fullName').addEventListener('input', function(e) {
             const value = e.target.value;
             const error = document.getElementById('fullNameError');
@@ -619,7 +620,6 @@
             }
         });
 
-        // Validate contact number
         document.getElementById('contactNumber').addEventListener('input', function(e) {
             e.target.value = e.target.value.replace(/\D/g, '');
             const error = document.getElementById('contactNumberError');
@@ -631,7 +631,6 @@
             }
         });
 
-        // Validate email
         document.getElementById('email').addEventListener('blur', function(e) {
             const error = document.getElementById('emailError');
             const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -642,7 +641,6 @@
             }
         });
 
-        // Validate textarea
         document.getElementById('aboutYourself').addEventListener('input', function(e) {
             const error = document.getElementById('aboutYourselfError');
             if (e.target.value.length > 0 && e.target.value.length < 50) {
@@ -654,14 +652,12 @@
             }
         });
 
-        // Form submission
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
             let isValid = true;
             let firstErrorEl = null;
 
-            // Validate all text/select/textarea required fields
             const textFields = form.querySelectorAll('input[type="text"][required], input[type="email"][required], input[type="tel"][required], select[required], textarea[required]');
             textFields.forEach(field => {
                 if (!field.value.trim()) {
@@ -673,7 +669,6 @@
                 }
             });
 
-            // Validate radio groups
             const radioGroups = ['voiceProcess', 'experience'];
             radioGroups.forEach(groupName => {
                 const checked = form.querySelector(`input[name="${groupName}"]:checked`);
@@ -681,7 +676,6 @@
                 if (!checked) {
                     isValid = false;
                     if (errorEl) errorEl.classList.add('show');
-                    // highlight radio options
                     const groupEl = document.getElementById(groupName + 'Group');
                     if (groupEl && !firstErrorEl) firstErrorEl = groupEl;
                 } else {
@@ -689,7 +683,6 @@
                 }
             });
 
-            // Validate CV
             if (!cvFileData) {
                 isValid = false;
                 cvUploadArea.classList.add('error');
@@ -699,7 +692,6 @@
                 if (!firstErrorEl) firstErrorEl = cvUploadArea;
             }
 
-            // Validate referredBy if visible
             if (referredByGroup.style.display !== 'none' && !referredByInput.value.trim()) {
                 isValid = false;
                 referredByInput.classList.add('error');
@@ -712,7 +704,6 @@
                 return;
             }
 
-            // Show loading
             document.getElementById('formContent').style.display = 'none';
             document.getElementById('loading').classList.add('show');
 
@@ -750,7 +741,7 @@
                 console.error('Error:', error);
                 document.getElementById('loading').classList.remove('show');
                 document.getElementById('formContent').style.display = 'block';
-                alert('❌ There was an error submitting your application. Please try again or contact us directly.');
+                alert('There was an error submitting your application. Please try again or contact us directly.');
             }
         });
     </script>
